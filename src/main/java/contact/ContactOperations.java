@@ -39,19 +39,22 @@ public class ContactOperations implements Serializable{
         session.close();
     }
     public void edit(Contact c, Contact oldC){
+        
+        // needs urgent fix
+        
         session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         
-        Contactbase cb = (Contactbase)session.load(Contactbase.class, oldC.getId());
-        Detail cd = (Detail)session.load(Detail.class, oldC.getId());
+        Contactbase cb = (Contactbase)session.load(Contactbase.class, oldC.getConId());
+        Detail cd = (Detail)session.load(Detail.class, oldC.getDetId());
         
-        cb.setConId(oldC.getId()); // necessary?
+        cb.setConId(oldC.getConId()); // necessary?
         cb.setTckno(c.getTCKno());
         cb.setName(c.getFirstName());
         cb.setSurname(c.getLastName());
         cb.setPassword(c.getPassword());
         
-        cd.setDetId(cb.getConId()); // necessary?
+        cd.setDetId(oldC.getDetId()); // necessary?
         cd.setEmail(c.getEmail());
         cd.setAge(c.getAge());
         cd.setGender(c.getGender());
@@ -93,7 +96,8 @@ public class ContactOperations implements Serializable{
                 Contact c = new Contact(cb.getTckno(), cb.getName(), cb.getSurname(),
                             cd.getEmail(), cd.getAge(), cd.getGender(), cd.getHeight(), cd.getWeight(), cb.getPassword());
                 
-                c.setId(i + 1); // db id entries start from 1
+                c.setConId(cbList.get(i).getConId());
+                c.setDetId(cdList.get(i).getDetId());
                 
                 contacts.add(c);
             } 

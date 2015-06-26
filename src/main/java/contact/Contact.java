@@ -6,7 +6,8 @@ public class Contact implements Serializable{
     
     private static final long serialVersionUID = 1L;
     
-    private Integer id;
+    private Integer conId;
+    private Integer detId;
     private String TCKno;
     private String firstName;
     private String lastName;
@@ -29,11 +30,17 @@ public class Contact implements Serializable{
         password = p;
     }
     
-    public Integer getId(){
-        return id;
+    public Integer getConId(){
+        return conId;
     }
-    public void setId(Integer id){
-        this.id = id;
+    public void setConId(Integer conId){
+        this.conId = conId;
+    }
+    public Integer getDetId(){
+        return detId;
+    }
+    public void setDetId(Integer detId){
+        this.detId = detId;
     }
     
     public String getTCKno(){

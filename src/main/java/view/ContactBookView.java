@@ -8,6 +8,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.UserError;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.ui.*;
@@ -54,7 +55,9 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
     // accordion preparation, put all the beginning properties into a vertical layout
     private final VerticalLayout textBoxLayout = new VerticalLayout(tckno, firstName, lastName, email, newContact);
     private final VerticalLayout detailsLayout = new VerticalLayout(age, gender, height, weight);
-    private final HorizontalLayout enterInfoLayout = new HorizontalLayout(textBoxLayout, detailsLayout, logout);
+    private final HorizontalLayout logoutLayout = new HorizontalLayout(logout);
+    private final HorizontalLayout enterInfoLayout = new HorizontalLayout(textBoxLayout, detailsLayout, logoutLayout);
+    
     
     // accordion to contain contacts grid
     private final Accordion tableAccordion = new Accordion();
@@ -138,7 +141,8 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
         contactList.setHeightMode(HeightMode.ROW);
         contactList.setHeightByRows(15.0);
         contactList.setColumnOrder("TCKno", "firstName", "lastName", "email", "age", "gender", "height", "weight");
-        contactList.removeColumn("id");
+        contactList.removeColumn("conId");
+        contactList.removeColumn("detId");
         contactList.removeColumn("password");
         
         contactList.setSizeFull();
@@ -194,7 +198,8 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
     private void buildLayout(){
         
         // MarginInfo(top right bottom left)
-        
+        logoutLayout.setComponentAlignment(logout, Alignment.MIDDLE_CENTER);
+        logoutLayout.setMargin(new MarginInfo(true, true, true, true));
         personalLayout.setMargin(new MarginInfo(true, false, false, true));
         
         editFieldLayout.setMargin(new MarginInfo(false, false, false, true)); // wraps tck, name, surname, email
@@ -225,13 +230,14 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
         weight.setInputPrompt("Enter weight");
         
         // bigger text boxes
-        tckno.setWidth("300px");
-        firstName.setWidth("300px");
-        lastName.setWidth("300px");
-        email.setWidth("300px");
-        age.setWidth("300px");
-        height.setWidth("300px");
-        weight.setWidth("300px");
+        tckno.setWidth("200px");
+        firstName.setWidth("200px");
+        lastName.setWidth("200px");
+        email.setWidth("200px");
+        gender.setWidth("200px");
+        age.setWidth("200px");
+        height.setWidth("200px");
+        weight.setWidth("200px");
         
         tckno.setMaxLength(11);
         firstName.setMaxLength(20);
@@ -446,7 +452,7 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
             else{
                 Contact con = new Contact(tckno.getValue(), firstName.getValue(), lastName.getValue(), 
                                           email.getValue(), Short.parseShort(age.getValue()), gender.getValue().toString(), 
-                                          Short.parseShort(height.getValue()), Short.parseShort(weight.getValue()), "");
+                                          Short.parseShort(height.getValue()), Short.parseShort(weight.getValue()), "0");
                 contactOperations.save(con);
                 container.addBean(con);
 
@@ -518,7 +524,8 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
                 
                 Contact oldC = new Contact(c.getTCKno(), c.getFirstName(), c.getLastName(),c.getEmail(), c.getAge(), 
                                            c.getGender(), c.getHeight(), c.getWeight(), c.getPassword()); // temp contact for db edit
-                oldC.setId(c.getId());
+                oldC.setConId(c.getConId());
+                oldC.setDetId(c.getDetId());
                 int index = container.indexOfId(c); // find index for bean replacement
                 c.setTCKno(editTckno.getValue());
                 c.setFirstName(editFirst.getValue());
