@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 5:14:12 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class catalog="contacts" name="hibernate.Contactbase" optimistic-lock="version" table="contactbase">
+    <id name="conId" type="java.lang.Integer">
+      <column name="conID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="tckno" type="string">
+      <column length="50" name="TCKno" not-null="true"/>
+    </property>
+    <property name="name" type="string">
+      <column length="50" name="name" not-null="true"/>
+    </property>
+    <property name="surname" type="string">
+      <column length="50" name="surname" not-null="true"/>
+    </property>
+    <property name="password" type="string">
+        <column length="50" name="password" not-null="true"/>
+    </property>
+    <set fetch="select" inverse="true" lazy="true" name="details" table="detail">
+      <key>
+        <column name="conIDfk"/>
+      </key>
+      <one-to-many class="hibernate.Detail"/>
+    </set>
+  </class>
+</hibernate-mapping>

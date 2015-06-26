@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2015 5:14:12 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class catalog="contacts" name="hibernate.Detail" optimistic-lock="version" table="detail">
+    <id name="detId" type="java.lang.Integer">
+      <column name="detID"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="hibernate.Contactbase" fetch="select" name="contactbase">
+      <column name="conIDfk"/>
+    </many-to-one>
+    <property name="email" type="string">
+      <column length="50" name="email" not-null="true"/>
+    </property>
+    <property name="age" type="short">
+      <column name="age" not-null="true"/>
+    </property>
+    <property name="gender" type="string">
+      <column length="50" name="gender" not-null="true"/>
+    </property>
+    <property name="height" type="short">
+      <column name="height" not-null="true"/>
+    </property>
+    <property name="weight" type="short">
+      <column name="weight" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>
