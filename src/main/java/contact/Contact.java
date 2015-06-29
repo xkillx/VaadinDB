@@ -1,7 +1,11 @@
 package contact;
 
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.VaadinSessionScope;
 import java.io.Serializable;
 
+@SpringComponent
+@VaadinSessionScope
 public class Contact implements Serializable{
     
     private static final long serialVersionUID = 1L;

@@ -4,6 +4,7 @@ import com.vaadin.annotations.*;;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
+import com.vaadin.spring.annotation.*;
 import com.vaadin.ui.*;
 import java.io.Serializable;
 import javax.servlet.ServletException;
@@ -25,11 +26,17 @@ public class UserInterface extends UI implements Serializable{
         navigator = new Navigator(this, this);
         navigator.addView(LoginView.NAME, new LoginView());
         navigator.addView(ContactBookView.NAME, new ContactBookView());
+        navigator.addView(DetailsView.NAME, new DetailsView());
         navigator.addViewChangeListener(new ViewChangeListener(){
             
             @Override
             public boolean beforeViewChange(ViewChangeListener.ViewChangeEvent event){
-                if(event.getNewView() instanceof ContactBookView && 
+                if(event.getNewView() instanceof ContactBookView &&
+                        (String)getUI().getSession().getAttribute("account") == null){
+                    Notification.show("NOT LOGGED IN", Notification.Type.ERROR_MESSAGE);
+                    return false;
+                }
+                else if(event.getNewView() instanceof DetailsView &&
                         (String)getUI().getSession().getAttribute("account") == null){
                     Notification.show("NOT LOGGED IN", Notification.Type.ERROR_MESSAGE);
                     return false;

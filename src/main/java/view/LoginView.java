@@ -19,7 +19,7 @@ public class LoginView extends VerticalLayout implements View, Serializable{
     public static final String NAME = "";
     
     public static String sessionId = "";
-    
+        
     // user inputs
     private final TextField email = new TextField("E-Mail Address");
     private final PasswordField password = new PasswordField("Password");

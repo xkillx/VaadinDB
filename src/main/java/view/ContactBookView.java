@@ -8,7 +8,6 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.UserError;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.ui.*;
@@ -22,6 +21,8 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
     // navigate name
     public static final String NAME = "main";
     
+    private final Button toDetails = new Button("Details Page");
+
     // user inputs    
     private final TextField tckno = new TextField("TCK No");
     private final TextField firstName = new TextField("First Name");
@@ -55,7 +56,7 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
     // accordion preparation, put all the beginning properties into a vertical layout
     private final VerticalLayout textBoxLayout = new VerticalLayout(tckno, firstName, lastName, email, newContact);
     private final VerticalLayout detailsLayout = new VerticalLayout(age, gender, height, weight);
-    private final HorizontalLayout logoutLayout = new HorizontalLayout(logout);
+    private final HorizontalLayout logoutLayout = new HorizontalLayout(logout, toDetails);
     private final HorizontalLayout enterInfoLayout = new HorizontalLayout(textBoxLayout, detailsLayout, logoutLayout);
     
     
@@ -434,6 +435,10 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
     }
     private void configureButtons(){
         
+        toDetails.addClickListener(e->{
+            getUI().getNavigator().navigateTo(DetailsView.NAME);
+        });
+        
         logout.addClickListener(e->{
             logout();
         });
@@ -630,7 +635,7 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
         Notification.show("You have logged out", Notification.Type.ERROR_MESSAGE);
         //VaadinSession.setCurrent(new VaadinSession(new VaadinService()));
         //LoginView.sessionId = VaadinSession.getCurrent().getSession().getId();
-        getUI().getNavigator().navigateTo(LoginView.NAME);
+        getUI().getNavigator().navigateTo(LoginView.NAME);   
     }
     
     @Override

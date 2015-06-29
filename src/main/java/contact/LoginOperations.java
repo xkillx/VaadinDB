@@ -1,5 +1,7 @@
 package contact;
 
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.VaadinSessionScope;
 import com.vaadin.ui.Notification;
 import java.io.Serializable;
 import java.util.List;
@@ -7,7 +9,8 @@ import org.hibernate.Session;
 
 import hibernate.*;
 
-
+@SpringComponent
+@VaadinSessionScope
 public class LoginOperations implements Serializable{
     
     private static final long serialVersionUID = 1L;

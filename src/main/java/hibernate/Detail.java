@@ -1,6 +1,5 @@
 package hibernate;
 
-import hibernate.Contactbase;
 import java.io.Serializable;
 
 public class Detail implements Serializable{

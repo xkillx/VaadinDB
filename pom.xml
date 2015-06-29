@@ -11,7 +11,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
-		<vaadin.version>7.4.8</vaadin.version>
+		<vaadin.version>7.5.0</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
                 <org-netbeans-modules-projectapi.jsf_2e_language>JSP</org-netbeans-modules-projectapi.jsf_2e_language>
 	</properties>
@@ -24,11 +24,11 @@
                         <id>jboss</id>
                         <url>http://repository.jboss.org/maven2/</url>        
                 </repository>
-                <repository>
+<!--                <repository>
                         <id>springsource-repo</id>
                         <name>SpringSource Repository</name>
                         <url>http://repo.springsource.org/release</url>
-                </repository>
+                </repository>-->
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -77,7 +77,12 @@
                         <artifactId>vaadin-spring</artifactId>
                         <version>1.0.0.beta3</version>
                 </dependency>
-                <dependency>
+<!--                <dependency>
+                        <groupId>org.vaadin.addons</groupId>
+                        <artifactId>appfoundation</artifactId>
+                        <version>2.0.0</version>
+                </dependency>-->
+<!--                <dependency>
                         <groupId>org.springframework</groupId>
                         <artifactId>spring-core</artifactId>
                         <version>4.1.6.RELEASE</version>
@@ -111,12 +116,7 @@
                         <groupId>cglib</groupId>
                         <artifactId>cglib</artifactId>
                         <version>2.2.2</version>
-                </dependency>
-                <dependency>
-                        <groupId>org.vaadin.addons</groupId>
-                        <artifactId>appfoundation</artifactId>
-                        <version>2.0.0</version>
-                </dependency>
+                </dependency>-->
 	</dependencies>
         
 	<build>
