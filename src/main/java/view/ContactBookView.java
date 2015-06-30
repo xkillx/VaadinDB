@@ -10,10 +10,15 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.UserError;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.grid.HeightMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 
+@UIScope
+@SpringView(name = ContactBookView.NAME)
 public class ContactBookView extends VerticalLayout implements View, Serializable{
     
     private static final long serialVersionUID = 1L;
@@ -23,7 +28,7 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
     
     private final Button toDetails = new Button("Details Page");
 
-    // user inputs    
+    // user inputs
     private final TextField tckno = new TextField("TCK No");
     private final TextField firstName = new TextField("First Name");
     private final TextField lastName = new TextField("Last name");
@@ -113,8 +118,8 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
     
     // contact object for selecting
     private Contact c;
-    
-    public ContactBookView(){
+    @PostConstruct
+    public void init(){
         configureComponents();
         buildLayout();
     }
@@ -435,13 +440,6 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
     }
     private void configureButtons(){
         
-        toDetails.addClickListener(e->{
-            getUI().getNavigator().navigateTo(DetailsView.NAME);
-        });
-        
-        logout.addClickListener(e->{
-            logout();
-        });
         // button config
         newContact.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         newContact.addClickListener(e->{
@@ -459,7 +457,10 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
                                           email.getValue(), Short.parseShort(age.getValue()), gender.getValue().toString(), 
                                           Short.parseShort(height.getValue()), Short.parseShort(weight.getValue()), "0");
                 contactOperations.save(con);
+                contacts.add(con);
                 container.addBean(con);
+                
+                Notification.show("Contact saved", Notification.Type.TRAY_NOTIFICATION);
 
                 //tableAccordion.setSelectedTab(contactList);
                 tckno.clear();
@@ -540,6 +541,8 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
                 c.setGender(editGender.getValue().toString());
                 c.setHeight(Short.parseShort(editHeight.getValue()));
                 c.setWeight(Short.parseShort(editWeight.getValue()));
+                
+                contacts.set(index, c);
                 
                 contactOperations.edit(c, oldC);
                 
@@ -626,18 +629,20 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
             cancelEdit.setVisible(false);
             editContact.setVisible(true);
         });
-    }
-    private void logout(){
-        //VaadinService service = getUI().getSession().getService();
-        //getUI().getSession().close();
-        //getUI().getSession().getSession().invalidate();
-        getUI().getSession().setAttribute("account", null);
-        Notification.show("You have logged out", Notification.Type.ERROR_MESSAGE);
-        //VaadinSession.setCurrent(new VaadinSession(new VaadinService()));
-        //LoginView.sessionId = VaadinSession.getCurrent().getSession().getId();
-        getUI().getNavigator().navigateTo(LoginView.NAME);   
-    }
-    
+        toDetails.addClickListener(e->{
+            getUI().getNavigator().navigateTo(DetailsView.NAME);
+        });
+        logout.addClickListener(e->{
+            //VaadinService service = getUI().getSession().getService();
+            //getUI().getSession().close();
+            //getUI().getSession().getSession().invalidate();
+            getUI().getSession().setAttribute("account", null);
+            Notification.show("You have logged out", Notification.Type.ERROR_MESSAGE);
+            //VaadinSession.setCurrent(new VaadinSession(new VaadinService()));
+            //LoginView.sessionId = VaadinSession.getCurrent().getSession().getId();
+            getUI().getNavigator().navigateTo(LoginView.NAME);
+        });
+    }    
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event){}
 }

@@ -1,7 +1,7 @@
 package contact;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.spring.annotation.VaadinSessionScope;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Notification;
 import java.io.Serializable;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.hibernate.Session;
 import hibernate.*;
 
 @SpringComponent
-@VaadinSessionScope
+@UIScope
 public class LoginOperations implements Serializable{
     
     private static final long serialVersionUID = 1L;
@@ -31,6 +31,7 @@ public class LoginOperations implements Serializable{
         
         for(int i = 0; i < allDetails.size(); i++){
             if(allDetails.get(i).getEmail().equals(email)){
+                System.out.println("email check");
                 id = allDetails.get(i).getContactbase().getConId();
             }
         }
@@ -68,7 +69,6 @@ public class LoginOperations implements Serializable{
         }catch(Exception e){
             Notification.show("Contact already exists", Notification.Type.ERROR_MESSAGE);
         }
-        
         session.close();
     }
     public String check(String tckno, String name, String surname){

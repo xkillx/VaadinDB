@@ -1,7 +1,7 @@
 package contact;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.spring.annotation.VaadinSessionScope;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
 import java.io.Serializable;
@@ -11,7 +11,7 @@ import org.hibernate.Session;
 import hibernate.*;
 
 @SpringComponent
-@VaadinSessionScope
+@UIScope
 public class ContactOperations implements Serializable{
     
     private static final long serialVersionUID = 1L;
@@ -43,8 +43,6 @@ public class ContactOperations implements Serializable{
         session.close();
     }
     public void edit(Contact c, Contact oldC){
-        
-        // needs urgent fix
         
         session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();

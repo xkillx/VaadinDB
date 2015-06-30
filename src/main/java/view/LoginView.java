@@ -6,11 +6,16 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import java.io.Serializable;
 
 import contact.*;
+import javax.annotation.PostConstruct;
 
+@UIScope
+@SpringView(name = LoginView.NAME)
 public class LoginView extends VerticalLayout implements View, Serializable{
     
     private static final long serialVersionUID = 1L;
@@ -70,7 +75,8 @@ public class LoginView extends VerticalLayout implements View, Serializable{
     // object for logging in, registering and retrieving forgotten password
     private final LoginOperations loginOperations = new LoginOperations();
     
-    public LoginView(){
+    @PostConstruct
+    public void init(){
         configureComponents();
         buildLayout();
     }
@@ -106,6 +112,7 @@ public class LoginView extends VerticalLayout implements View, Serializable{
                     // login success
                     Notification.show("Login success", Notification.Type.ERROR_MESSAGE);
                     getUI().getSession().setAttribute("account", email.getValue());
+                    DetailsView.accountEmail = email.getValue();
                     getUI().getNavigator().navigateTo(ContactBookView.NAME);
                 }
             }
@@ -143,7 +150,7 @@ public class LoginView extends VerticalLayout implements View, Serializable{
                         regEmail.getValue(), Short.parseShort(regAge.getValue()), regGender.getValue().toString(), 
                         Short.parseShort(regHeight.getValue()), Short.parseShort(regWeight.getValue()), regPassword.getValue()));
                 
-                Notification.show("Registration successful", Notification.Type.TRAY_NOTIFICATION);
+                Notification.show("Registration successful", Notification.Type.TRAY_NOTIFICATION); // fix this, possibly return boolean
             }
         });
         regClear.addClickListener(e->{
@@ -194,8 +201,7 @@ public class LoginView extends VerticalLayout implements View, Serializable{
             forgotSend.removeClickShortcut();
             login.setClickShortcut(ShortcutAction.KeyCode.ENTER);
             login.focus();             
-        });
-        
+        }); 
     }
     private void configureTextFields(){
         
