@@ -2,7 +2,6 @@ package view;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 //import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
@@ -23,7 +22,7 @@ public class DetailsView extends VerticalLayout implements View, Serializable{
     
     private final Label text = new Label("Your account details:");
     
-    private final Label sessionId = new Label();
+    //private final Label sessionId = new Label();
     
     private final Label TCKno = new Label();
     private final Label name = new Label();
@@ -39,8 +38,8 @@ public class DetailsView extends VerticalLayout implements View, Serializable{
     private final Button logout = new Button("Logout");
     
     private final VerticalLayout vlayout = new VerticalLayout(text);
-    private final VerticalLayout dlayout = new VerticalLayout(sessionId, TCKno, name, surname, password,
-                                               email, age, gender, height, weight);
+    private final VerticalLayout dlayout = new VerticalLayout(TCKno, name, surname, password,
+                                               email, age, gender, height, weight); // sessionId at the beginning
     private final HorizontalLayout buttonLayout = new HorizontalLayout(back, logout);
     
     private final VerticalLayout mainLayout = new VerticalLayout(vlayout, dlayout, buttonLayout);
@@ -63,7 +62,7 @@ public class DetailsView extends VerticalLayout implements View, Serializable{
     private void configureComponents(){
         configureButtons();
         
-        sessionId.setValue("The session id is: " + VaadinSession.getCurrent().getSession().getId());
+        //sessionId.setValue("The session id is: " + VaadinSession.getCurrent().getSession().getId());
         
         c = detailOperations.retrieveDetails((String)UserInterface.getCurrent().getSession().getAttribute("account"));
         
@@ -91,7 +90,7 @@ public class DetailsView extends VerticalLayout implements View, Serializable{
     private void buildLayout(){
         
         dlayout.setMargin(new MarginInfo(true, true, true, true));
-        dlayout.setComponentAlignment(sessionId, Alignment.MIDDLE_CENTER);
+        //dlayout.setComponentAlignment(sessionId, Alignment.MIDDLE_CENTER);
         dlayout.setComponentAlignment(TCKno, Alignment.MIDDLE_CENTER);
         dlayout.setComponentAlignment(name, Alignment.MIDDLE_CENTER);
         dlayout.setComponentAlignment(surname, Alignment.MIDDLE_CENTER);

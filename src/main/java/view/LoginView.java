@@ -7,14 +7,15 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
 import com.vaadin.shared.ui.MarginInfo;
 //import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
+//import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.ui.*;
 import java.io.Serializable;
 
 import contact.*;
 //import javax.annotation.PostConstruct;
 
-@UIScope
+@ViewScope
 //@SpringView(name = LoginView.NAME)
 public class LoginView extends VerticalLayout implements View, Serializable{
     

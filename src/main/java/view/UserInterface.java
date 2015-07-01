@@ -6,14 +6,14 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
 import com.vaadin.spring.annotation.*;
 //import com.vaadin.spring.navigator.SpringViewProvider;
-//import com.vaadin.spring.server.SpringVaadinServlet;
+import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.*;
 import java.io.Serializable;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-//import javax.servlet.annotation.WebListener;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.web.context.ContextLoaderListener;
+import javax.servlet.annotation.WebListener;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.ContextLoaderListener;
 //import org.springframework.beans.factory.annotation.Autowired;
 
 import hibernate.HibernateUtil;
@@ -64,10 +64,10 @@ public class UserInterface extends UI implements Serializable{
         });
     }
     
-    @WebServlet(urlPatterns = "/*", asyncSupported = false)
+    @WebServlet(urlPatterns = "/*", asyncSupported = true)
     @VaadinServletConfiguration(ui = UserInterface.class, productionMode = false, heartbeatInterval = 60, // UI cleanup interval
                                 closeIdleSessions = true)
-    public static class MyUIServlet extends VaadinServlet implements SessionInitListener, SessionDestroyListener, Serializable{
+    public static class MyUIServlet extends SpringVaadinServlet implements SessionInitListener, SessionDestroyListener, Serializable{
         
         private static final long serialVersionUID = 1L;
         
@@ -95,15 +95,14 @@ public class UserInterface extends UI implements Serializable{
         }
     }
     
-//    @WebListener
-//    public static class MyContextLoaderListener extends ContextLoaderListener implements Serializable{
-//        private static final long serialVersionUID = 1L;
-//    }
-//    
-//    @Configuration
-//    @EnableVaadin
-//    //@Push
-//    public static class MyConfiguration implements Serializable{
-//        private static final long serialVersionUID = 1L;
-//    }
+    @WebListener
+    public static class MyContextLoaderListener extends ContextLoaderListener implements Serializable{
+        private static final long serialVersionUID = 1L;
+    }
+    
+    @Configuration
+    @EnableVaadin
+    public static class MyConfiguration implements Serializable{
+        private static final long serialVersionUID = 1L;
+    }
 }
