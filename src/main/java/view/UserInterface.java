@@ -5,41 +5,42 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
 import com.vaadin.spring.annotation.*;
-import com.vaadin.spring.navigator.SpringViewProvider;
-import com.vaadin.spring.server.SpringVaadinServlet;
+//import com.vaadin.spring.navigator.SpringViewProvider;
+//import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.*;
 import java.io.Serializable;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.annotation.WebListener;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.beans.factory.annotation.Autowired;
+//import javax.servlet.annotation.WebListener;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.web.context.ContextLoaderListener;
+//import org.springframework.beans.factory.annotation.Autowired;
 
 import hibernate.HibernateUtil;
 
 @UIScope
+@SpringUI
 @Title("Contact Book")
 @Theme("reindeer")
-@SpringUI
+//@Push
 public class UserInterface extends UI implements Serializable{
     
     private static final long serialVersionUID = 1L;
     
-    @Autowired
-    private SpringViewProvider viewProvider;
+//    @Autowired
+//    private SpringViewProvider viewProvider;
     private Navigator navigator;
     
     @Override
     protected void init(VaadinRequest request){
         VaadinSession.getCurrent().getSession().setMaxInactiveInterval(120); // session gets destroyed after interval
         navigator = new Navigator(this, this);
-        navigator.addProvider(viewProvider);
+        //navigator.addProvider(viewProvider);
         //viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
         //navigator.setErrorView(new ErrorView());
-        //navigator.addView(LoginView.NAME, new LoginView());
-        //navigator.addView(ContactBookView.NAME, new ContactBookView());
-        //navigator.addView(DetailsView.NAME, new DetailsView());
+        navigator.addView(LoginView.NAME, new LoginView());
+        navigator.addView(ContactBookView.NAME, new ContactBookView());
+        navigator.addView(DetailsView.NAME, new DetailsView());
         navigator.addViewChangeListener(new ViewChangeListener(){
             
             @Override
@@ -63,10 +64,10 @@ public class UserInterface extends UI implements Serializable{
         });
     }
     
-    @WebServlet(urlPatterns = "/*")
+    @WebServlet(urlPatterns = "/*", asyncSupported = false)
     @VaadinServletConfiguration(ui = UserInterface.class, productionMode = false, heartbeatInterval = 60, // UI cleanup interval
                                 closeIdleSessions = true)
-    public static class MyUIServlet extends SpringVaadinServlet implements SessionInitListener, SessionDestroyListener, Serializable{
+    public static class MyUIServlet extends VaadinServlet implements SessionInitListener, SessionDestroyListener, Serializable{
         
         private static final long serialVersionUID = 1L;
         
@@ -77,12 +78,12 @@ public class UserInterface extends UI implements Serializable{
             getService().addSessionInitListener(this);
             getService().addSessionDestroyListener(this);
             
-            getService().setSystemMessagesProvider((SystemMessagesInfo systemMessagesInfo)->{
-                CustomizedSystemMessages messages = new CustomizedSystemMessages();
-                messages.setSessionExpiredNotificationEnabled(false);
-                messages.setSessionExpiredURL("http://localhost:8080/VaadinDB/?restartApplication");
-                return messages;
-            });
+//            getService().setSystemMessagesProvider((SystemMessagesInfo systemMessagesInfo)->{
+//                CustomizedSystemMessages messages = new CustomizedSystemMessages();
+//                messages.setSessionExpiredNotificationEnabled(false);
+//                messages.setSessionExpiredURL("http://localhost:8080/VaadinDB/?restartApplication");
+//                return messages;
+//            });
         }
 
         @Override
@@ -94,12 +95,15 @@ public class UserInterface extends UI implements Serializable{
         }
     }
     
-    @WebListener
-    public static class MyContextLoaderListener extends ContextLoaderListener implements Serializable{
-        private static final long serialVersionUID = 1L;
-    }
-    
-    @Configuration
-    @EnableVaadin
-    public static class MyConfiguration{}
+//    @WebListener
+//    public static class MyContextLoaderListener extends ContextLoaderListener implements Serializable{
+//        private static final long serialVersionUID = 1L;
+//    }
+//    
+//    @Configuration
+//    @EnableVaadin
+//    //@Push
+//    public static class MyConfiguration implements Serializable{
+//        private static final long serialVersionUID = 1L;
+//    }
 }

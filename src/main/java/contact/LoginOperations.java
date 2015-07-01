@@ -31,7 +31,6 @@ public class LoginOperations implements Serializable{
         
         for(int i = 0; i < allDetails.size(); i++){
             if(allDetails.get(i).getEmail().equals(email)){
-                System.out.println("email check");
                 id = allDetails.get(i).getContactbase().getConId();
             }
         }

@@ -21,6 +21,8 @@ public class Contact implements Serializable{
     private short height;
     private short weight;
     private String password;
+    
+    public Contact(){}
 
     public Contact(String tck, String f, String l, String e, short a, String g, short h, short w, String p){
         TCKno = tck;

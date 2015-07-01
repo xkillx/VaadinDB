@@ -10,15 +10,15 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.UserError;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.grid.HeightMode;
-import com.vaadin.spring.annotation.SpringView;
+//import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import javax.annotation.PostConstruct;
+//import javax.annotation.PostConstruct;
 
 @UIScope
-@SpringView(name = ContactBookView.NAME)
+//@SpringView(name = ContactBookView.NAME)
 public class ContactBookView extends VerticalLayout implements View, Serializable{
     
     private static final long serialVersionUID = 1L;
@@ -118,12 +118,18 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
     
     // contact object for selecting
     private Contact c;
-    @PostConstruct
-    public void init(){
+    
+//    @PostConstruct
+//    public void init(){
+//        configureComponents();
+//        buildLayout();
+//    }
+    
+    public ContactBookView(){
         configureComponents();
         buildLayout();
     }
-    private void configureComponents(){    
+    private void configureComponents(){
         
         configureTextFields();
         configureButtons();
@@ -630,13 +636,17 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
             editContact.setVisible(true);
         });
         toDetails.addClickListener(e->{
+            // reload view
+            getUI().getNavigator().removeView(DetailsView.NAME);
+            getUI().getNavigator().addView(DetailsView.NAME, new DetailsView());
+            
             getUI().getNavigator().navigateTo(DetailsView.NAME);
         });
         logout.addClickListener(e->{
             //VaadinService service = getUI().getSession().getService();
             //getUI().getSession().close();
             //getUI().getSession().getSession().invalidate();
-            getUI().getSession().setAttribute("account", null);
+            UserInterface.getCurrent().getSession().setAttribute("account", null);
             Notification.show("You have logged out", Notification.Type.ERROR_MESSAGE);
             //VaadinSession.setCurrent(new VaadinSession(new VaadinService()));
             //LoginView.sessionId = VaadinSession.getCurrent().getSession().getId();

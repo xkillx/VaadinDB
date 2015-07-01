@@ -6,16 +6,16 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.spring.annotation.SpringView;
+//import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import java.io.Serializable;
 
 import contact.*;
-import javax.annotation.PostConstruct;
+//import javax.annotation.PostConstruct;
 
 @UIScope
-@SpringView(name = LoginView.NAME)
+//@SpringView(name = LoginView.NAME)
 public class LoginView extends VerticalLayout implements View, Serializable{
     
     private static final long serialVersionUID = 1L;
@@ -75,8 +75,13 @@ public class LoginView extends VerticalLayout implements View, Serializable{
     // object for logging in, registering and retrieving forgotten password
     private final LoginOperations loginOperations = new LoginOperations();
     
-    @PostConstruct
-    public void init(){
+//    @PostConstruct
+//    public void init(){
+//        configureComponents();
+//        buildLayout();
+//    }
+    
+    public LoginView(){
         configureComponents();
         buildLayout();
     }
@@ -111,8 +116,10 @@ public class LoginView extends VerticalLayout implements View, Serializable{
                 else{
                     // login success
                     Notification.show("Login success", Notification.Type.ERROR_MESSAGE);
-                    getUI().getSession().setAttribute("account", email.getValue());
-                    DetailsView.accountEmail = email.getValue();
+                    //getUI().getSession().setAttribute("account", email.getValue());
+                    UserInterface.getCurrent().getSession().setAttribute("account", email.getValue());
+                    email.clear();
+                    password.clear();
                     getUI().getNavigator().navigateTo(ContactBookView.NAME);
                 }
             }
@@ -151,6 +158,23 @@ public class LoginView extends VerticalLayout implements View, Serializable{
                         Short.parseShort(regHeight.getValue()), Short.parseShort(regWeight.getValue()), regPassword.getValue()));
                 
                 Notification.show("Registration successful", Notification.Type.TRAY_NOTIFICATION); // fix this, possibly return boolean
+                UserInterface.getCurrent().getSession().setAttribute("account", regEmail.getValue());
+                regTckno.clear();
+                regName.clear();
+                regSurname.clear();
+                regEmail.clear();
+                regPassword.clear(); // sets it to "null"?
+                regPassword.setValue("");
+                regAge.clear();
+                regGender.clear();
+                regHeight.clear();
+                regWeight.clear();
+                regConfirm.removeClickShortcut();
+                forgotSend.removeClickShortcut();
+                login.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+                login.focus();
+                registerLayout.setVisible(false);
+                getUI().getNavigator().navigateTo(ContactBookView.NAME);
             }
         });
         regClear.addClickListener(e->{
@@ -443,7 +467,6 @@ public class LoginView extends VerticalLayout implements View, Serializable{
         
         addComponent(mainLayout);
     }
-
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event){}
 }

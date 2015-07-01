@@ -4,24 +4,22 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.spring.annotation.SpringView;
+//import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import javax.annotation.PostConstruct;
+//import javax.annotation.PostConstruct;
 
 import contact.Contact;
-import contact.ContactOperations;
+import contact.DetailOperations;
 
 @UIScope
-@SpringView(name = DetailsView.NAME)
+//@SpringView(name = DetailsView.NAME)
 public class DetailsView extends VerticalLayout implements View, Serializable{
     
     private static final long serialVersionUID = 1L;
     
     public static final String NAME = "details";
-    public static String accountEmail = "";
     
     private final Label text = new Label("Your account details:");
     
@@ -47,33 +45,37 @@ public class DetailsView extends VerticalLayout implements View, Serializable{
     
     private final VerticalLayout mainLayout = new VerticalLayout(vlayout, dlayout, buttonLayout);
     
-    private final ContactOperations contactOperations = new ContactOperations();
-    private final ArrayList<Contact> contacts = contactOperations.getContacts();
+    private final DetailOperations detailOperations = new DetailOperations();
     
-    @PostConstruct
-    public void init(){
+    private Contact c;
+    
+//    @PostConstruct
+//    public void init(){
+//        configureComponents();
+//        buildLayout();
+//        //getUI().getSession().getAttribute("account");
+//    }
+    
+    public DetailsView(){
         configureComponents();
         buildLayout();
-        //getUI().getSession().getAttribute("account");
     }
     private void configureComponents(){
         configureButtons();
         
         sessionId.setValue("The session id is: " + VaadinSession.getCurrent().getSession().getId());
         
-        for(int i = 0; i < contacts.size(); i++){
-            if(contacts.get(i).getEmail().equals(accountEmail)){
-                TCKno.setValue("TCK no: " + contacts.get(i).getTCKno());
-                name.setValue("Name: " + contacts.get(i).getFirstName());
-                surname.setValue("Surname: " + contacts.get(i).getLastName());
-                password.setValue("Password: " + contacts.get(i).getPassword());
-                email.setValue("E-Mail: " + accountEmail);
-                age.setValue("Age: " + Short.toString(contacts.get(i).getAge()));
-                gender.setValue("Gender: " + contacts.get(i).getGender());
-                height.setValue("Height: " + Short.toString(contacts.get(i).getHeight()));
-                weight.setValue("Weight: " + Short.toString(contacts.get(i).getWeight()));
-            }
-        }
+        c = detailOperations.retrieveDetails((String)UserInterface.getCurrent().getSession().getAttribute("account"));
+        
+        TCKno.setValue("TCK no: " + c.getTCKno());
+        name.setValue("Name: " + c.getFirstName());
+        surname.setValue("Surname: " + c.getLastName());
+        password.setValue("Password: " + c.getPassword());
+        email.setValue("E-Mail: " + c.getEmail());
+        age.setValue("Age: " + Short.toString(c.getAge()));
+        gender.setValue("Gender: " + c.getGender());
+        height.setValue("Height: " + Short.toString(c.getHeight()));
+        weight.setValue("Weight: " + Short.toString(c.getWeight()));      
     }
     private void configureButtons(){
         
@@ -81,7 +83,7 @@ public class DetailsView extends VerticalLayout implements View, Serializable{
             getUI().getNavigator().navigateTo(ContactBookView.NAME);
         });
         logout.addClickListener(e->{
-            getUI().getSession().setAttribute("account", null);
+            UserInterface.getCurrent().getSession().setAttribute("account", null);
             Notification.show("You have logged out", Notification.Type.ERROR_MESSAGE);
             getUI().getNavigator().navigateTo(LoginView.NAME);
         });
@@ -114,7 +116,7 @@ public class DetailsView extends VerticalLayout implements View, Serializable{
         
         addComponent(mainLayout);
         setComponentAlignment(mainLayout, Alignment.MIDDLE_LEFT);
-    }    
+    }
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event){}    
 }
