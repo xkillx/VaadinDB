@@ -124,6 +124,7 @@ public class LoginView extends VerticalLayout implements View, Serializable{
                     getUI().getNavigator().navigateTo(ContactBookView.NAME);
                 }
             }
+           
         });
         forgotpass.addClickListener(e->{
             login.removeClickShortcut();

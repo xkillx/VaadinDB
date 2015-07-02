@@ -128,6 +128,7 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
     public ContactBookView(){
         configureComponents();
         buildLayout();
+        
     }
     private void configureComponents(){
         
@@ -159,7 +160,7 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
         
         contactList.setSizeFull();
         contactList.setSelectionMode(Grid.SelectionMode.SINGLE);
-        contactList.setImmediate(true); // necessary?
+        contactList.setImmediate(true);
         contactList.addSelectionListener((e)->{
             
             c = (Contact)contactList.getSelectedRow();
@@ -465,6 +466,7 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
                 contactOperations.save(con);
                 contacts.add(con);
                 container.addBean(con);
+                //Broadcaster.broadcast("hellooooooooooo");
                 
                 Notification.show("Contact saved", Notification.Type.TRAY_NOTIFICATION);
 

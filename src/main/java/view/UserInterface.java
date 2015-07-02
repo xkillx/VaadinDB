@@ -17,13 +17,14 @@ import org.springframework.web.context.ContextLoaderListener;
 //import org.springframework.beans.factory.annotation.Autowired;
 
 import hibernate.HibernateUtil;
+import view.Broadcaster.BroadcastListener;
 
-@UIScope
+//@UIScope
 @SpringUI
 @Title("Contact Book")
 @Theme("reindeer")
-//@Push
-public class UserInterface extends UI implements Serializable{
+@Push
+public class UserInterface extends UI implements Serializable, BroadcastListener{
     
     private static final long serialVersionUID = 1L;
     
@@ -33,6 +34,7 @@ public class UserInterface extends UI implements Serializable{
     
     @Override
     protected void init(VaadinRequest request){
+        //UserInterface.getCurrent().setPollInterval(1000);
         VaadinSession.getCurrent().getSession().setMaxInactiveInterval(120); // session gets destroyed after interval
         navigator = new Navigator(this, this);
         //navigator.addProvider(viewProvider);
@@ -61,6 +63,27 @@ public class UserInterface extends UI implements Serializable{
             }
             @Override
             public void afterViewChange(ViewChangeListener.ViewChangeEvent event){}
+        });
+        
+        Broadcaster.register(this);
+    }
+    @Override
+    public void detach(){
+        Broadcaster.unregister(this);
+        super.detach();
+    }
+
+    @Override
+    public void receiveBroadcast(String message) {
+        access(()->{
+            //navigator.removeView(LoginView.NAME);
+            //navigator.removeView(ContactBookView.NAME);
+            //navigator.removeView(DetailsView.NAME);
+            //navigator.addView(LoginView.NAME, new LoginView());
+            //navigator.addView(ContactBookView.NAME, new ContactBookView());
+            //navigator.addView(DetailsView.NAME, new DetailsView());
+            Notification.show(message, Notification.Type.ERROR_MESSAGE);
+            
         });
     }
     
