@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class ContactBookView extends VerticalLayout implements View, Serializable{
     
     private static final long serialVersionUID = 1L;
-    
+        
     // navigate name
     public static final String NAME = "main";
     
@@ -115,7 +115,7 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
     private final VerticalLayout editFieldLayout = new VerticalLayout(tckLayout, nameLayout, surnameLayout, emailLayout);
     private final VerticalLayout editFieldLayout2 = new VerticalLayout(ageLayout, genderLayout, heightLayout, weightLayout);
     private final HorizontalLayout editLayout = new HorizontalLayout(editFieldLayout, editFieldLayout2, editButtonLayout);
-    
+        
     // contact object for selecting
     private Contact c;
     
@@ -466,7 +466,6 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
                 contactOperations.save(con);
                 contacts.add(con);
                 container.addBean(con);
-                //Broadcaster.broadcast("hellooooooooooo");
                 
                 Notification.show("Contact saved", Notification.Type.TRAY_NOTIFICATION);
 
@@ -480,6 +479,8 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
                 height.clear();
                 weight.clear();
                 tckno.focus();
+                
+                Broadcaster.broadcast();
             }
         });
         
@@ -600,6 +601,8 @@ public class ContactBookView extends VerticalLayout implements View, Serializabl
                 editContact.setVisible(true);
                 
                 Notification.show("Contact edited", Notification.Type.TRAY_NOTIFICATION);
+                
+                Broadcaster.broadcast();
             }
         });
         cancelEdit.addClickListener(e->{

@@ -1,10 +1,10 @@
 package view;
 
-import com.vaadin.annotations.*;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
 import com.vaadin.spring.annotation.*;
+import com.vaadin.annotations.*;
 //import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.*;
@@ -34,7 +34,6 @@ public class UserInterface extends UI implements Serializable, BroadcastListener
     
     @Override
     protected void init(VaadinRequest request){
-        //UserInterface.getCurrent().setPollInterval(1000);
         VaadinSession.getCurrent().getSession().setMaxInactiveInterval(120); // session gets destroyed after interval
         navigator = new Navigator(this, this);
         //navigator.addProvider(viewProvider);
@@ -74,16 +73,11 @@ public class UserInterface extends UI implements Serializable, BroadcastListener
     }
 
     @Override
-    public void receiveBroadcast(String message) {
+    public void receiveBroadcast(){
         access(()->{
-            //navigator.removeView(LoginView.NAME);
-            //navigator.removeView(ContactBookView.NAME);
-            //navigator.removeView(DetailsView.NAME);
-            //navigator.addView(LoginView.NAME, new LoginView());
-            //navigator.addView(ContactBookView.NAME, new ContactBookView());
-            //navigator.addView(DetailsView.NAME, new DetailsView());
-            Notification.show(message, Notification.Type.ERROR_MESSAGE);
-            
+            navigator.removeView(ContactBookView.NAME);
+            navigator.addView(ContactBookView.NAME, new ContactBookView());
+            navigator.navigateTo(ContactBookView.NAME);
         });
     }
     

@@ -117,5 +117,5 @@ public class DetailsView extends VerticalLayout implements View, Serializable{
         setComponentAlignment(mainLayout, Alignment.MIDDLE_LEFT);
     }
     @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event){}    
+    public void enter(ViewChangeListener.ViewChangeEvent event){}
 }
